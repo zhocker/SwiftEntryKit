@@ -50,11 +50,25 @@ public struct EKPopUpMessage {
                 title: EKProperty.LabelContent,
                 description: EKProperty.LabelContent,
                 button: EKProperty.ButtonContent,
+                displayMode: EKAttributes.DisplayMode = .inferred,
                 action: @escaping EKPopUpMessageAction) {
+        
+        var themeImage = themeImage
+        themeImage?.image.displayMode = displayMode
         self.themeImage = themeImage
+        
+        var title = title
+        title.style.displayMode = displayMode
         self.title = title
+        
+        var description = description
+        description.style.displayMode = displayMode
         self.description = description
+        
+        var button = button
+        button.displayMode = displayMode
         self.button = button
+        
         self.action = action
     }
 }

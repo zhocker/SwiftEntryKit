@@ -26,7 +26,11 @@ public struct EKProperty {
         public var contentEdgeInset: CGFloat
         
         /** The display mode of the button */
-        public var displayMode: EKAttributes.DisplayMode
+        public var displayMode: EKAttributes.DisplayMode {
+            didSet {
+                setupDisplayMode()
+            }
+        }
         
         /** Accessibility identifier that identifies the button */
         public var accessibilityIdentifier: String?
@@ -48,6 +52,11 @@ public struct EKProperty {
             self.displayMode = displayMode
             self.accessibilityIdentifier = accessibilityIdentifier
             self.action = action
+            setupDisplayMode()
+        }
+        
+        private mutating func setupDisplayMode() {
+            label.style.displayMode = displayMode
         }
         
         public func backgroundColor(for traitCollection: UITraitCollection) -> UIColor {
@@ -274,7 +283,11 @@ public struct EKProperty {
         public var placeholder: LabelContent
         public var textStyle: LabelStyle
         public var tintColor: EKColor!
-        public var displayMode: EKAttributes.DisplayMode
+        public var displayMode: EKAttributes.DisplayMode {
+            didSet {
+                setupDisplayMode()
+            }
+        }
         public var bottomBorderColor: EKColor
         public var accessibilityIdentifier: String?
         let contentWrapper = ContentWrapper()
@@ -305,6 +318,12 @@ public struct EKProperty {
             self.leadingImage = leadingImage
             self.bottomBorderColor = bottomBorderColor
             self.accessibilityIdentifier = accessibilityIdentifier
+            setupDisplayMode()
+        }
+        
+        private mutating func setupDisplayMode() {
+            placeholder.style.displayMode = displayMode
+            textStyle.displayMode = displayMode
         }
         
         public func tintColor(for traitCollection: UITraitCollection) -> UIColor? {
@@ -335,7 +354,11 @@ public struct EKProperty {
         public var buttonHeight: CGFloat
         
         /** The display mode of the button bar */
-        public var displayMode: EKAttributes.DisplayMode
+        public var displayMode: EKAttributes.DisplayMode {
+            didSet {
+                setupDisplayMode()
+            }
+        }
         
         public init(with buttonContents: ButtonContent...,
                     separatorColor: EKColor,
@@ -360,12 +383,21 @@ public struct EKProperty {
             guard horizontalDistributionThreshold > 0 else {
                 fatalError("horizontalDistributionThreshold Must have a positive value!")
             }
+            self.displayMode = displayMode
             self.separatorColor = separatorColor
             self.horizontalDistributionThreshold = horizontalDistributionThreshold
             self.buttonHeight = buttonHeight
-            self.displayMode = displayMode
             self.expandAnimatedly = expandAnimatedly
             content.append(contentsOf: buttonContents)
+            setupDisplayMode()
+        }
+        
+        private mutating func setupDisplayMode() {
+            content = content.map { button -> EKProperty.ButtonContent in
+                var button = button
+                button.displayMode = displayMode
+                return button
+            }
         }
         
         public func separatorColor(for traitCollection: UITraitCollection) -> UIColor {
@@ -379,15 +411,30 @@ public struct EKProperty {
         public var description: EKProperty.LabelContent
         public var unselectedImage: EKProperty.ImageContent
         public var selectedImage: EKProperty.ImageContent
-    
+        public var displayMode: EKAttributes.DisplayMode {
+            didSet {
+                setupDisplayMode()
+            }
+        }
+        
         public init(title: EKProperty.LabelContent,
                     description: EKProperty.LabelContent,
                     unselectedImage: EKProperty.ImageContent,
-                    selectedImage: EKProperty.ImageContent) {
+                    selectedImage: EKProperty.ImageContent,
+                    displayMode: EKAttributes.DisplayMode = .inferred) {
             self.title = title
             self.description = description
             self.unselectedImage = unselectedImage
             self.selectedImage = selectedImage
+            self.displayMode = displayMode
+            setupDisplayMode()
+        }
+        
+        private mutating func setupDisplayMode() {
+            title.style.displayMode = displayMode
+            description.style.displayMode = displayMode
+            unselectedImage.displayMode = displayMode
+            selectedImage.displayMode = displayMode
         }
     }
 }

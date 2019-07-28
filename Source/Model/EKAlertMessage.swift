@@ -17,16 +17,21 @@ public struct EKAlertMessage {
     public let imagePosition: ImagePosition
     
     /** Image, Title, Description */
-    public let simpleMessage: EKSimpleMessage
+    public var simpleMessage: EKSimpleMessage
     
     /** Contents of button bar */
-    public let buttonBarContent: EKProperty.ButtonBarContent
+    public var buttonBarContent: EKProperty.ButtonBarContent
     
     public init(simpleMessage: EKSimpleMessage,
                 imagePosition: ImagePosition = .top,
-                buttonBarContent: EKProperty.ButtonBarContent) {
+                buttonBarContent: EKProperty.ButtonBarContent,
+                displayMode: EKAttributes.DisplayMode = .inferred) {
         self.simpleMessage = simpleMessage
-        self.imagePosition = imagePosition
+        self.simpleMessage.displayMode = displayMode
+        
         self.buttonBarContent = buttonBarContent
+        self.buttonBarContent.displayMode = displayMode
+        
+        self.imagePosition = imagePosition
     }
 }

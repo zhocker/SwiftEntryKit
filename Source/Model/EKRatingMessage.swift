@@ -30,6 +30,9 @@ public struct EKRatingMessage {
     /** Button bar content appears after selection */
     public var buttonBarContent: EKProperty.ButtonBarContent
     
+    /** The display mode of its inner properties */
+    public var displayMode: EKAttributes.DisplayMode
+    
     /** Selection event - Each time the user interacts a rating star */
     public var selection: Selection!
 
@@ -50,11 +53,25 @@ public struct EKRatingMessage {
                 initialDescription: EKProperty.LabelContent,
                 ratingItems: [EKProperty.EKRatingItemContent],
                 buttonBarContent: EKProperty.ButtonBarContent,
+                displayMode: EKAttributes.DisplayMode = .inferred,
                 selection: Selection? = nil) {
+        self.displayMode = displayMode
         self.initialTitle = initialTitle
         self.initialDescription = initialDescription
         self.ratingItems = ratingItems
         self.buttonBarContent = buttonBarContent
         self.selection = selection
+        setupDisplayMode()
+    }
+    
+    private mutating func setupDisplayMode() {
+        initialTitle.style.displayMode = displayMode
+        initialDescription.style.displayMode = displayMode
+        buttonBarContent.displayMode = displayMode
+        ratingItems = ratingItems.map { item -> EKProperty.EKRatingItemContent in
+            var item = item
+            item.displayMode = displayMode
+            return item
+        }
     }
 }

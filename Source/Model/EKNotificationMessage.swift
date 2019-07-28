@@ -23,19 +23,24 @@ public struct EKNotificationMessage {
     }
     
     /** Image, Title, Description */
-    public let simpleMessage: EKSimpleMessage
+    public var simpleMessage: EKSimpleMessage
     
     /** Optional auxiliary label descriptor (For instance, it be used to display time of message) */
-    public let auxiliary: EKProperty.LabelContent?
+    public var auxiliary: EKProperty.LabelContent?
     
     /** Defines the vertical and horizontal margins */
     public let insets: Insets
         
     public init(simpleMessage: EKSimpleMessage,
                 auxiliary: EKProperty.LabelContent? = nil,
+                displayMode: EKAttributes.DisplayMode = .inferred,
                 insets: Insets = .default) {
         self.simpleMessage = simpleMessage
+        self.simpleMessage.displayMode = displayMode
+        
         self.auxiliary = auxiliary
+        self.auxiliary?.style.displayMode = displayMode
+        
         self.insets = insets
     }
 }
