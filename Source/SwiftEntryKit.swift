@@ -10,7 +10,7 @@ import UIKit
 /**
  A stateless, threadsafe (unless described otherwise) entry point that contains the display and the dismissal logic of entries.
  */
-public final class SwiftEntryKit {
+public class SwiftEntryKit {
     
     /** Describes the a single or multiple entries for possible dismissal states */
     public enum EntryDismissalDescriptor {
@@ -108,13 +108,13 @@ public final class SwiftEntryKit {
     public class func display(entry view: UIView, using attributes: EKAttributes, presentInsideKeyWindow: Bool = false, rollbackWindow: RollbackWindow = .main) {
         DispatchQueue.main.async {
             EKWindowProvider.shared.display(view: view, using: attributes, presentInsideKeyWindow: presentInsideKeyWindow, rollbackWindow: rollbackWindow)
-                     if #available(iOS 13.0, *) {
+
+            if #available(iOS 13.0, *) {
                 if attributes.displayMode == .dark {
                     EKWindowProvider.shared.entryWindow.overrideUserInterfaceStyle = .dark
                 } else {
                     EKWindowProvider.shared.entryWindow.overrideUserInterfaceStyle = .light
                 }
-                print("EKWindowProvider")
             }
         }
     }
@@ -131,13 +131,12 @@ public final class SwiftEntryKit {
     public class func display(entry viewController: UIViewController, using attributes: EKAttributes, presentInsideKeyWindow: Bool = false, rollbackWindow: RollbackWindow = .main) {
         DispatchQueue.main.async {
             EKWindowProvider.shared.display(viewController: viewController, using: attributes, presentInsideKeyWindow: presentInsideKeyWindow, rollbackWindow: rollbackWindow)
-                     if #available(iOS 13.0, *) {
+            if #available(iOS 13.0, *) {
                 if attributes.displayMode == .dark {
                     EKWindowProvider.shared.entryWindow.overrideUserInterfaceStyle = .dark
                 } else {
                     EKWindowProvider.shared.entryWindow.overrideUserInterfaceStyle = .light
                 }
-                print("EKWindowProvider")
             }
         }
     }
