@@ -669,14 +669,19 @@ extension EKContentView {
     }
     
     private func calculateLogarithmicOffset(forOffset offset: CGFloat, currentTranslation: CGFloat) {
-        if attributes.position.isTop {
-            inConstraint.constant = verticalLimit * (1 + log10(offset / verticalLimit))
-        } else {
-            let offset = Swift.abs(offset) + verticalLimit
-            let addition: CGFloat = abs(currentTranslation) < 2 ? 0 : 1
-            inConstraint.constant -= (addition + log10(offset / verticalLimit))
+        
+        if verticalLimit != 0 { // The prevented divisor can not is equal to 0
+            if attributes.position.isTop {
+                inConstraint.constant = verticalLimit * (1 + log10(offset / verticalLimit))
+            } else {
+                let offset = Swift.abs(offset) + verticalLimit
+                let addition: CGFloat = abs(currentTranslation) < 2 ? 0 : 1
+                inConstraint.constant -= (addition + log10(offset / verticalLimit))
+            }
         }
+         
     }
+
     
     private func shouldStretch(with translation: CGFloat) -> Bool {
         if attributes.position.isTop {
